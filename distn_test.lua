@@ -5,9 +5,26 @@
 -- 3rd edition, by Donald Knuth
 --
 
+function run_cmd(cmd)
+  local p = io.popen(cmd)
+  local out = p:read()
+  p:close()
+  return out
+end
+
+function screen_size()
+  local w = tonumber(run_cmd('tput cols'))
+  local h = tonumber(run_cmd('tput lines'))
+  return w, h
+end
+
 -- This expects all samples to live in [0, 1].
 function draw_hist(samples)
-  local w, h = 180, 47
+
+  -- Get the width and height, and add extra room.
+  local w, h = screen_size()
+  w = w - 2
+  h = h - 6
   local x_left = 0
   local x_delta = 1.0 / w
 
